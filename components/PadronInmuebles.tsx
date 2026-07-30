@@ -235,7 +235,7 @@ function EncabezadoPagina() {
         </div>
         <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-gray-200">
           <Image
-            src="/margarita-maza.png"
+            src="/margarita_maza.png"
             alt="Margarita Maza"
             fill
             sizes="48px"
