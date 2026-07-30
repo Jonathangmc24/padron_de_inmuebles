@@ -68,4 +68,11 @@
   button:focus-visible {
     box-shadow: 0 0 0 5px rgba(107, 21, 53, 0.18);
   }
+
+  /* Usar esta clase en botones que NO deben tener la sombra (ej. pestañas/tabs) */
+  button.sin-sombra-hover:hover,
+  button.sin-sombra-hover:active,
+  button.sin-sombra-hover:focus-visible {
+    box-shadow: none;
+  }
 }

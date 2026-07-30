@@ -295,7 +295,7 @@ function TabsExpediente({
             key={t.key}
             type="button"
             onClick={() => onTabChange(t.key)}
-            className={`whitespace-nowrap rounded-t-lg px-4 py-2.5 text-sm transition-colors ${
+            className={`sin-sombra-hover whitespace-nowrap rounded-t-lg px-4 py-2.5 text-sm transition-colors ${
               activo ? "font-bold" : "font-medium"
             }`}
             style={activo ? { backgroundColor: "#EEE4E7", color: "#7B2645" } : { color: "#9C6B7A" }}
