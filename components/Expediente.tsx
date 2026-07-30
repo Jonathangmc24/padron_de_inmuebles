@@ -217,7 +217,7 @@ function Breadcrumb() {
       <p className="text-xs text-gray-400">Padrón de inmuebles · Expediente</p>
       <a
         href="/padron-inmuebles"
-        className="mt-1 inline-flex items-center gap-1 text-sm font-semibold"
+        className="mt-1 inline-flex items-center gap-1 text-sm font-medium"
         style={{ color: "#7B2645" }}
       >
         <ChevronLeft className="h-4 w-4" />
@@ -238,12 +238,12 @@ function TarjetaIdentidad({ identidad }: { identidad: ExpedienteData["identidad"
         className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-lg text-white"
         style={{ backgroundColor: "#611830" }}
       >
-        <span className="text-xl font-extrabold leading-none">{identidad.noGbi}</span>
+        <span className="text-xl font-medium leading-none">{identidad.noGbi}</span>
         <span className="text-[10px] font-medium tracking-wide">GBI</span>
       </div>
 
       <div className="min-w-0 flex-1">
-        <h2 className="text-lg font-bold text-gray-900">{identidad.titulo}</h2>
+        <h2 className="text-lg font-medium text-gray-900">{identidad.titulo}</h2>
         <p className="mt-0.5 text-sm text-gray-500">
           Consecutivo {identidad.consecutivo} · C.U.O. {identidad.cuo} · R.F.I. {identidad.rfi} ·
           {" "}{identidad.direccionRegional}
@@ -287,7 +287,7 @@ function TabsExpediente({
   onTabChange: (t: TabKey) => void;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap gap-1 overflow-x-auto border-b border-gray-300">
+    <div className="mb-6 flex flex-wrap gap-1  border-b border-gray-300">
       {TABS.map((t) => {
         const activo = t.key === tabActivo;
         return (
@@ -296,7 +296,7 @@ function TabsExpediente({
             type="button"
             onClick={() => onTabChange(t.key)}
             className={`sin-sombra-hover whitespace-nowrap rounded-t-lg px-4 py-2.5 text-sm transition-colors ${
-              activo ? "font-bold" : "font-medium"
+              activo ? "font-medium" : "font-medium"
             }`}
             style={activo ? { backgroundColor: "#EEE4E7", color: "#7B2645" } : { color: "#9C6B7A" }}
           >
@@ -316,7 +316,7 @@ function Seccion({ titulo, children }: { titulo: string; children: React.ReactNo
   return (
     <div className="mb-8">
       <div className="mb-3 flex items-center gap-3">
-        <h3 className="whitespace-nowrap text-xs font-bold uppercase tracking-wider" style={{ color: "#7B2645" }}>
+        <h3 className="whitespace-nowrap text-xs font-medium uppercase tracking-wider" style={{ color: "#7B2645" }}>
           {titulo}
         </h3>
         <div className="h-px flex-1 bg-gray-200" />
@@ -331,10 +331,10 @@ function CampoGrid({ campos }: { campos: Campo[] }) {
     <div className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-gray-200 bg-gray-200 sm:grid-cols-3">
       {campos.map((c, i) => (
         <div key={i} className="bg-white p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: "#7B2645" }}>
+          <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: "#7B2645" }}>
             {c.label}
           </p>
-          <p className="mt-1 text-sm font-semibold text-gray-900">{c.value}</p>
+          <p className="mt-1 text-sm font-medium text-gray-900">{c.value}</p>
         </div>
       ))}
     </div>
@@ -356,7 +356,7 @@ function Checklist({ items }: { items: ChecklistItem[] }) {
           <div key={i} className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-4">
             <Icono className={`mt-0.5 h-4 w-4 shrink-0 ${color}`} />
             <div>
-              <p className="text-sm font-semibold text-gray-900">{item.label}</p>
+              <p className="text-sm font-medium text-gray-900">{item.label}</p>
               {item.detalle && <p className="text-xs text-gray-500">{item.detalle}</p>}
             </div>
           </div>
@@ -383,7 +383,7 @@ function Timeline({ eventos }: { eventos: EventoBitacora[] }) {
             className="absolute -left-[29px] top-0.5 h-3 w-3 rounded-full border-2 bg-white"
             style={{ borderColor: "#7B2645" }}
           />
-          <p className="text-xs font-semibold text-gray-400">{ev.fecha}</p>
+          <p className="text-xs font-medium text-gray-400">{ev.fecha}</p>
           <p className="text-sm font-medium text-gray-900">{ev.evento}</p>
           <p className="text-xs text-gray-500">{ev.autor}</p>
         </li>
@@ -480,7 +480,7 @@ function ContenidoTab({ tab, data }: { tab: TabKey; data: ExpedienteData }) {
           </Seccion>
           <Seccion titulo="Observaciones">
             <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <p className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: "#7B2645" }}>
+              <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: "#7B2645" }}>
                 Comentario
               </p>
               <p className="mt-1 text-sm text-gray-700">{data.situacionesEspeciales.comentario}</p>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { SelectPersonalizado } from "@/components/shared/SelectPersonalizado";
+import { SelectorFecha } from "@/components/shared/SelectorFecha";
 
 // -----------------------------------------------------------------------
 // Tipos del formulario
@@ -31,8 +31,6 @@ interface AltaInmuebleForm {
     numeroExteriorInterior: string;
     colonia: string;
     cpDireccion: string;
-    latitud: string;
-    longitud: string;
   };
   datosTecnicos: {
     tipoInmueble: string;
@@ -66,8 +64,6 @@ const formInicial: AltaInmuebleForm = {
     numeroExteriorInterior: "",
     colonia: "",
     cpDireccion: "",
-    latitud: "",
-    longitud: "",
   },
   datosTecnicos: {
     tipoInmueble: "",
@@ -310,18 +306,6 @@ export default function AltaInmueble() {
             onChange={(v) => actualizar("ubicacion", "cpDireccion", v)}
             placeholder="Texto..."
           />
-          <CampoTexto
-            label="Latitud"
-            value={form.ubicacion.latitud}
-            onChange={(v) => actualizar("ubicacion", "latitud", v)}
-            placeholder="Texto..."
-          />
-          <CampoTexto
-            label="Longitud"
-            value={form.ubicacion.longitud}
-            onChange={(v) => actualizar("ubicacion", "longitud", v)}
-            placeholder="Texto..."
-          />
         </SeccionCard>
 
         <SeccionCard titulo="Datos técnicos">
@@ -507,7 +491,7 @@ function CampoSelect({
         onChange={onChange}
         placeholder={placeholder}
         opciones={opciones}
-        variante="formulario"
+        variante="filtro"
       />
     </div>
   );
@@ -525,21 +509,7 @@ function CampoFecha({
   return (
     <div>
       <label className="mb-1.5 block text-sm text-gray-700">{label}</label>
-      <div className="relative">
-        <input
-          type="date"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full appearance-none rounded-lg py-2.5 pl-4 pr-12 text-sm text-white outline-none [color-scheme:dark]"
-          style={{ backgroundColor: "#611830" }}
-        />
-        <span
-          className="pointer-events-none absolute right-1.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full"
-          style={{ backgroundColor: "#B53867" }}
-        >
-          <Calendar className="h-4 w-4 text-white" />
-        </span>
-      </div>
+      <SelectorFecha value={value} onChange={onChange} />
     </div>
   );
 }

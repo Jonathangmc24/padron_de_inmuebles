@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Search, Download, Plus } from "lucide-react";
-import Image from "next/image";
 import { Header } from "@/components/layout/Header";
 import { guardarUltimoInmueble } from "@/lib/ultimoInmueble";
 import { SelectPersonalizado } from "@/components/shared/SelectPersonalizado";
@@ -214,35 +213,13 @@ export default function PadronInmuebles() {
 
 function EncabezadoPagina() {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+    <div className="mb-6">
       <a
         href="/"
         className="inline-block border-b-2 border-gray-800 pb-1 text-sm font-medium text-gray-800 hover:text-gray-600"
       >
         Panel de inicio
       </a>
-
-      {/* Insignia oficial del año — sustituye el ícono por el arte oficial cuando lo tengas */}
-      <div className="flex items-center gap-3">
-        <div className="text-right">
-          <p className="text-xs text-gray-500">año de</p>
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-2xl font-extrabold" style={{ color: "#CB831E" }}>
-              2026
-            </span>
-            <span className="text-sm font-bold text-gray-800">Margarita Maza</span>
-          </div>
-        </div>
-        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-gray-200">
-          <Image
-            src="/public/margarita_maza.png"
-            alt="Margarita Maza"
-            fill
-            sizes="48px"
-            className="object-cover object-bottom"
-          />
-        </div>
-      </div>
     </div>
   );
 }
@@ -283,7 +260,7 @@ function BarraBusquedaYAlta({
 
       <button
         type="button"
-        className="flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3 text-sm font-semibold text-white"
+        className="flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3 text-sm font-medium text-white"
         style={{ backgroundColor: "#611830" }}
         onClick={() => {
           window.location.href = "/inmuebles/nuevo";
@@ -310,7 +287,7 @@ function Tabs({
   onTabChange: (t: TabKey) => void;
 }) {
   return (
-    <div className="mb-4 flex flex-nowrap gap-1 overflow-x-auto border-b border-gray-300">
+    <div className="mb-4 flex flex-wrap gap-1 border-b border-gray-300">
       {tabs.map((t) => {
         const activo = t.key === tabActivo;
         return (
@@ -319,7 +296,7 @@ function Tabs({
             type="button"
             onClick={() => onTabChange(t.key)}
             className={`sin-sombra-hover whitespace-nowrap rounded-t-lg px-4 py-2.5 text-sm transition-colors ${
-              activo ? "font-bold" : "font-medium"
+              activo ? "font-medium" : "font-medium"
             }`}
             style={
               activo
@@ -382,7 +359,7 @@ function FiltrosYExportar({
   const tipos = ["Administración", "Sucursal", "COR", "CR"];
 
   return (
-    <div className="mb-6 flex flex-nowrap items-center gap-3 overflow-x-auto pb-1">
+    <div className="mb-6 flex flex-wrap items-center gap-3">
       <button
         type="button"
         className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
@@ -440,7 +417,7 @@ function TablaInmuebles({ items, cargando }: { items: Inmueble[]; cargando: bool
         <thead style={{ backgroundColor: "#611830" }}>
           <tr>
             {columnas.map((col) => (
-              <th key={col} className="whitespace-nowrap px-5 py-4 font-semibold text-white">
+              <th key={col} className="whitespace-nowrap px-5 py-4 font-medium text-white">
                 {col}
               </th>
             ))}
@@ -473,7 +450,7 @@ function TablaInmuebles({ items, cargando }: { items: Inmueble[]; cargando: bool
                     <td className="px-5 py-4">{item.entidad}</td>
                     <td className="px-5 py-4">{item.tipoInmueble}</td>
                     <td className="px-5 py-4">
-                      <div className={`flex items-center gap-1.5 font-semibold ${cfg.text}`}>
+                      <div className={`flex items-center gap-1.5 font-medium ${cfg.text}`}>
                         <span className={`h-2 w-2 rounded-full ${cfg.dot}`} />
                         {cfg.label}
                       </div>
