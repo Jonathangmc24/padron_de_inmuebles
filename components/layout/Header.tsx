@@ -57,13 +57,13 @@ export function Header({ title, iniciales }: HeaderProps) {
       )}
 
       <div className="flex items-center gap-2">
-        <div className="relative h-9 w-9 shrink-0 sm:overflow-hidden sm:rounded-full">
+        <div className="relative h-11 w-11 shrink-0 sm:overflow-hidden sm:rounded-full">
           {/* Coloca tu archivo en /public (ej. /public/logo-favicon.png) y ajusta el src */}
           <Image
             src="/logo_gob_mx.png"
             alt="Gobierno de México"
             fill
-            sizes="36px"
+            sizes="44px"
             className="object-contain"
           />
         </div>
@@ -80,8 +80,7 @@ export function Header({ title, iniciales }: HeaderProps) {
         <button
           type="button"
           aria-label="Perfil"
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-bold"
-          style={{ color: "#611830" }}
+          className="flex h-9 w-9 items-center justify-center text-sm font-bold text-white"
         >
           {iniciales || "··"}
         </button>
