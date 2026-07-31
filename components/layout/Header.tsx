@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { Menu } from "lucide-react";
 import {
   DropdownMenu,
@@ -35,16 +36,17 @@ const capturaAction = { label: "+ Alta de inmueble", href: "/inmuebles/nuevo" };
 
 interface HeaderProps {
   title: string;
-  iniciales: string;
+  /** Ya no se muestra en el header, se deja por compatibilidad con las pantallas que lo pasan */
+  iniciales?: string;
 }
 
-export function Header({ title, iniciales }: HeaderProps) {
+export function Header({ title }: HeaderProps) {
   const pathname = usePathname();
   const [menuAbierto, setMenuAbierto] = useState(false);
 
   return (
     <header
-      className="relative flex items-center justify-end px-4 py-5 sm:px-6 sm:py-6"
+      className="relative flex items-center justify-between px-4 py-5 sm:px-6 sm:py-6"
       style={{ backgroundColor: "#611830" }}
     >
       {menuAbierto && (
@@ -55,19 +57,27 @@ export function Header({ title, iniciales }: HeaderProps) {
         />
       )}
 
-      <h1 className="absolute left-1/2 max-w-[65vw] -translate-x-1/2 truncate px-2 text-sm font-semibold text-white sm:max-w-none sm:text-base lg:text-lg">
+      <div className="flex items-center gap-2">
+        <div className="relative h-11 w-11 shrink-0 sm:overflow-hidden sm:rounded-full">
+          {/* Coloca tu archivo en /public (ej. /public/logo-favicon.png) y ajusta el src */}
+          <Image
+            src="/logo_gob_mx.png"
+            alt="Gobierno de México"
+            fill
+            sizes="44px"
+            className="object-contain"
+          />
+        </div>
+        <span className="hidden text-sm font-medium text-white sm:inline">
+          Gobierno de <strong>México</strong>
+        </span>
+      </div>
+
+      <h1 className="absolute left-1/2 max-w-[55vw] -translate-x-1/2 truncate px-2 text-sm font-semibold text-white sm:max-w-none sm:text-base lg:text-lg">
         {title}
       </h1>
 
       <div className="relative z-50 flex items-center gap-4">
-        <button
-          type="button"
-          aria-label="Perfil"
-          className="flex h-9 w-9 items-center justify-center text-sm font-bold text-white"
-        >
-          {iniciales || "··"}
-        </button>
-
         <DropdownMenu open={menuAbierto} onOpenChange={setMenuAbierto}>
           <DropdownMenuTrigger asChild>
             <button
