@@ -287,7 +287,7 @@ function Tabs({
   onTabChange: (t: TabKey) => void;
 }) {
   return (
-    <div className="mb-4 flex flex-wrap gap-1 border-b border-gray-300">
+    <div className="mb-4 flex flex-nowrap gap-1 overflow-x-auto border-b border-gray-300 pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
       {tabs.map((t) => {
         const activo = t.key === tabActivo;
         return (
@@ -359,7 +359,7 @@ function FiltrosYExportar({
   const tipos = ["Administración", "Sucursal", "COR", "CR"];
 
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-3">
+    <div className="mb-6 flex flex-nowrap items-center gap-3 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
       <button
         type="button"
         className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"

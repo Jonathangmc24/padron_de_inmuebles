@@ -57,16 +57,19 @@ export function Header({ title, iniciales }: HeaderProps) {
       )}
 
       <div className="flex items-center gap-2">
-        <div className="relative h-9 w-30 shrink-0 overflow-hidden rounded-full">
+        <div className="relative h-9 w-9 shrink-0 sm:overflow-hidden sm:rounded-full">
           {/* Coloca tu archivo en /public (ej. /public/logo-favicon.png) y ajusta el src */}
           <Image
             src="/logo_gob_mx.png"
             alt="Gobierno de México"
             fill
-            sizes="50px"
+            sizes="36px"
             className="object-contain"
           />
         </div>
+        <span className="hidden text-sm font-medium text-white sm:inline">
+          Gobierno de <strong>México</strong>
+        </span>
       </div>
 
       <h1 className="absolute left-1/2 max-w-[55vw] -translate-x-1/2 truncate px-2 text-sm font-semibold text-white sm:max-w-none sm:text-base lg:text-lg">

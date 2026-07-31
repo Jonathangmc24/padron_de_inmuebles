@@ -350,6 +350,12 @@ export default function AltaInmueble() {
         </SeccionCard>
 
         {/* Aquí seguirán las siguientes secciones del formulario */}
+
+        <AccionesMovil
+          guardando={guardando}
+          onGuardarBorrador={onGuardarBorrador}
+          onCrearExpediente={onCrearExpediente}
+        />
       </main>
     </div>
   );
@@ -387,7 +393,7 @@ function EncabezadoFormulario({
         </a>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-end gap-3 sm:gap-4">
+      <div className="mt-4 hidden flex-wrap items-center justify-end gap-3 sm:flex sm:gap-4">
         <a href="/padron-inmuebles" className="text-sm font-medium text-gray-500 hover:text-gray-700">
           Cancelar
         </a>
@@ -410,6 +416,49 @@ function EncabezadoFormulario({
           Crear expediente
         </button>
       </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------
+// Botones de acción — versión móvil, apilados y full width al final del formulario
+// -----------------------------------------------------------------------
+
+function AccionesMovil({
+  guardando,
+  onGuardarBorrador,
+  onCrearExpediente,
+}: {
+  guardando: boolean;
+  onGuardarBorrador: () => void;
+  onCrearExpediente: () => void;
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:hidden">
+      <button
+        type="button"
+        disabled={guardando}
+        onClick={onCrearExpediente}
+        className="w-full rounded-full px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        style={{ backgroundColor: "#7B2645" }}
+      >
+        Crear expediente
+      </button>
+      <button
+        type="button"
+        disabled={guardando}
+        onClick={onGuardarBorrador}
+        className="w-full rounded-full px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        style={{ backgroundColor: "#C57300" }}
+      >
+        Guardar borrador
+      </button>
+      <a
+        href="/padron-inmuebles"
+        className="w-full py-1 text-center text-sm font-medium text-gray-500 hover:text-gray-700"
+      >
+        Cancelar
+      </a>
     </div>
   );
 }
