@@ -77,13 +77,7 @@ export function Header({ title, iniciales }: HeaderProps) {
       </h1>
 
       <div className="relative z-50 flex items-center gap-4">
-        <button
-          type="button"
-          aria-label="Perfil"
-          className="flex h-9 w-9 items-center justify-center text-sm font-bold text-white"
-        >
-          {iniciales || "··"}
-        </button>
+        
 
         <DropdownMenu open={menuAbierto} onOpenChange={setMenuAbierto}>
           <DropdownMenuTrigger asChild>
