@@ -285,13 +285,13 @@ function TablaContratos({ contratos, cargando }: { contratos: Contrato[]; cargan
   return (
     <div className="mb-8 overflow-hidden rounded-xl border border-gray-200 bg-white">
       <div
-        className="flex items-center justify-between px-5 py-3"
+        className="flex flex-col gap-1 px-5 py-3 sm:flex-row sm:items-center sm:justify-between"
         style={{ backgroundColor: "#611830" }}
       >
-        <span className="text-sm font-semibold text-white">
+        <span className="text-sm font-medium text-white">
           Contratos de arrendamiento y comodatos
         </span>
-        <span className="text-sm font-medium text-white/80">Próximos a vencer</span>
+        <span className="text-xs font-medium text-white/80 sm:text-sm">Próximos a vencer</span>
       </div>
 
       <div>
@@ -299,7 +299,7 @@ function TablaContratos({ contratos, cargando }: { contratos: Contrato[]; cargan
           ? Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="flex animate-pulse items-center justify-between border-b border-gray-100 px-5 py-4 last:border-none"
+                className="flex animate-pulse flex-wrap items-center justify-between gap-2 border-b border-gray-100 px-5 py-4 last:border-none"
               >
                 <div className="space-y-2">
                   <div className="h-4 w-56 rounded bg-gray-200" />
@@ -311,7 +311,7 @@ function TablaContratos({ contratos, cargando }: { contratos: Contrato[]; cargan
           : contratos.map((c, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between border-b border-gray-100 px-5 py-4 last:border-none"
+                className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 px-5 py-4 last:border-none"
               >
                 <div>
                   <p className="text-sm font-semibold text-gray-900">{c.titulo}</p>

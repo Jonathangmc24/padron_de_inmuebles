@@ -292,8 +292,8 @@ function ResumenTable({
   cargando: boolean;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl" style={{ backgroundColor: "#7A1F3D" }}>
-      <table className="w-full text-left text-sm text-white">
+    <div className="overflow-x-auto rounded-xl" style={{ backgroundColor: "#7A1F3D" }}>
+      <table className="w-full min-w-[560px] text-left text-sm text-white">
         <thead style={{ backgroundColor: "#611830" }}>
           <tr className="border-b border-white/15 text-white">
             <th className="px-5 py-4 font-semibold">Tipo</th>

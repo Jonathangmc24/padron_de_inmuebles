@@ -412,8 +412,8 @@ function TablaInmuebles({ items, cargando }: { items: Inmueble[]; cargando: bool
   ];
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-      <table className="w-full text-left text-sm">
+    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+      <table className="w-full min-w-[720px] text-left text-sm">
         <thead style={{ backgroundColor: "#611830" }}>
           <tr>
             {columnas.map((col) => (

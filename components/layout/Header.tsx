@@ -57,19 +57,19 @@ export function Header({ title, iniciales }: HeaderProps) {
       )}
 
       <div className="flex items-center gap-2">
-        <div className="relative h-9 w-25 shrink-0 overflow-hidden rounded-full">
+        <div className="relative h-9 w-30 shrink-0 overflow-hidden rounded-full">
           {/* Coloca tu archivo en /public (ej. /public/logo-favicon.png) y ajusta el src */}
           <Image
             src="/logo_gob_mx.png"
             alt="Gobierno de México"
             fill
-            sizes="60px"
+            sizes="50px"
             className="object-contain"
           />
         </div>
       </div>
 
-      <h1 className="absolute left-1/2 -translate-x-1/2 text-base font-semibold text-white sm:text-lg">
+      <h1 className="absolute left-1/2 max-w-[55vw] -translate-x-1/2 truncate px-2 text-sm font-semibold text-white sm:max-w-none sm:text-base lg:text-lg">
         {title}
       </h1>
 
@@ -97,7 +97,7 @@ export function Header({ title, iniciales }: HeaderProps) {
           <DropdownMenuContent
             align="end"
             sideOffset={10}
-            className="z-50 w-72 rounded-2xl border-none p-3 shadow-2xl"
+            className="z-50 w-72 max-w-[85vw] rounded-2xl border-none p-3 shadow-2xl"
             style={{ backgroundColor: "#6B1535" }}
           >
             {navGroups.map((group, gi) => (
