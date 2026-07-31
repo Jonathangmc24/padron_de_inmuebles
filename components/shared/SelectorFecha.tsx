@@ -67,18 +67,14 @@ export function SelectorFecha({ value, onChange }: SelectorFechaProps) {
       <Popover.Trigger asChild>
         <button
           type="button"
-          className="flex w-full items-center justify-center rounded-lg px-4 py-2.5 text-sm text-white outline-none transition-opacity hover:opacity-90"
-          style={{ backgroundColor: "#611830" }}
+          className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-700 outline-none transition-colors hover:border-gray-400"
         >
-          {value && (
-            <span className="mr-auto text-white">{formatearFecha(value)}</span>
+          {value ? (
+            <span className="mr-auto text-gray-700">{formatearFecha(value)}</span>
+          ) : (
+            <span className="mr-auto text-gray-400">dd/mm/aaaa</span>
           )}
-          <span
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-            style={{ backgroundColor: "#B53867" }}
-          >
-            <CalendarIcon className="h-4 w-4 text-white" />
-          </span>
+          <CalendarIcon className="ml-2 h-4 w-4 shrink-0 text-gray-400" />
         </button>
       </Popover.Trigger>
 

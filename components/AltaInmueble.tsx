@@ -387,14 +387,6 @@ function EncabezadoFormulario({
         </a>
       </div>
 
-      <div
-        className="mt-4 inline-block rounded-full border px-4 py-2 text-xs font-medium"
-        style={{ borderColor: "#C57300", color: "#C57300" }}
-      >
-        <span className="font-bold">Flujograma inicial:</span> 1.1 R.F.I. - 1.2 Regimen
-        (Documentado de propiedad) - 1.3 Ubicación (Georreferencia y constancia de aliniamiento)
-      </div>
-
       <div className="mt-4 flex items-center justify-end gap-4">
         <a href="/padron-inmuebles" className="text-sm font-medium text-gray-500 hover:text-gray-700">
           Cancelar
@@ -463,8 +455,7 @@ function CampoTexto({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg border-2 bg-white px-4 py-2.5 text-sm text-gray-700 outline-none placeholder:text-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
-        style={{ borderColor: "#6B1535" }}
+        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
       />
     </div>
   );
