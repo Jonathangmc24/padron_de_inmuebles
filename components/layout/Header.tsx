@@ -58,7 +58,7 @@ export function Header({ title }: HeaderProps) {
       )}
 
       <div className="flex items-center gap-2">
-        <div className="relative h-11 w-11 shrink-0 sm:overflow-hidden sm:rounded-full">
+        <div className="relative h-11 w-20 shrink-0 sm:overflow-hidden sm:rounded-full">
           {/* Coloca tu archivo en /public (ej. /public/logo-favicon.png) y ajusta el src */}
           <Image
             src="/logo_gob_mx.png"
