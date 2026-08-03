@@ -221,7 +221,7 @@ function MapaCard() {
   return (
     <div
       className="relative overflow-hidden rounded-xl p-6"
-      style={{ backgroundColor: "#390B1D" }}
+      style={{ backgroundColor: "#611830" }}
     >
       <AlaDecorativa side="left" />
       <AlaDecorativa side="right" />
