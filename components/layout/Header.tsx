@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Menu } from "lucide-react";
+import { Menu, Home, ClipboardList } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,12 +35,18 @@ const navGroups = [
 const capturaAction = { label: "+ Alta de inmueble", href: "/inmuebles/nuevo" };
 
 interface HeaderProps {
-  title: string;
+  /** Ya no se muestra en el header — ahora cada pantalla lo despliega en su propio contenido */
+  title?: string;
   /** Ya no se muestra en el header, se deja por compatibilidad con las pantallas que lo pasan */
   iniciales?: string;
 }
 
-export function Header({ title }: HeaderProps) {
+const accesosDirectos = [
+  { label: "Panel de inicio", href: "/", Icono: Home },
+  { label: "Padrón de inmuebles", href: "/padron-inmuebles", Icono: ClipboardList },
+];
+
+export function Header({}: HeaderProps) {
   const pathname = usePathname();
   const [menuAbierto, setMenuAbierto] = useState(false);
 
@@ -58,26 +64,41 @@ export function Header({ title }: HeaderProps) {
       )}
 
       <div className="flex items-center gap-2">
-        <div className="relative h-11 w-25 shrink-0 sm:overflow-hidden sm:rounded-full">
+        <div className="relative h-11 w-25 shrink-0 sm: sm:rounded-full">
           {/* Coloca tu archivo en /public (ej. /public/logo-favicon.png) y ajusta el src */}
           <Image
             src="/logo_gob_mx.png"
             alt="Gobierno de México"
             fill
-            sizes="44px"
+            sizes="50px"
             className="object-contain"
           />
         </div>
-        <span className="hidden text-sm font-medium text-white sm:inline">
-          Gobierno de <strong>México</strong>
-        </span>
       </div>
 
-      <h1 className="absolute left-1/2 max-w-[55vw] -translate-x-1/2 truncate px-2 text-sm font-semibold text-white sm:max-w-none sm:text-base lg:text-lg">
-        {title}
-      </h1>
+      <div className="relative z-50 flex items-center gap-3 sm:gap-4">
+        {accesosDirectos.map(({ label, href, Icono }) => {
+          const activo = pathname === href;
+          return (
+            <a
+              key={href}
+              href={href}
+              aria-label={label}
+              title={label}
+              className="flex h-8 w-8 items-center justify-center rounded-full transition-colors"
+              style={
+                activo
+                  ? { backgroundColor: "#EEE4E7", color: "#7B2645" }
+                  : { color: "rgba(255,255,255,0.9)" }
+              }
+            >
+              <Icono className="h-[18px] w-[18px]" />
+            </a>
+          );
+        })}
 
-      <div className="relative z-50 flex items-center gap-4">
+        <span className="h-5 w-px bg-white/20" aria-hidden="true" />
+
         <DropdownMenu open={menuAbierto} onOpenChange={setMenuAbierto}>
           <DropdownMenuTrigger asChild>
             <button

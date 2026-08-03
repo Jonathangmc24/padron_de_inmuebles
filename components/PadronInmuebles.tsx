@@ -214,6 +214,7 @@ export default function PadronInmuebles() {
 function EncabezadoPagina() {
   return (
     <div className="mb-6">
+      <h2 className="mb-2 text-2xl font-bold text-gray-900">Padrón de inmuebles</h2>
       <a
         href="/"
         className="inline-block border-b-2 border-gray-800 pb-1 text-sm font-medium text-gray-800 hover:text-gray-600"

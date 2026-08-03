@@ -214,6 +214,7 @@ export default function Expediente() {
 function Breadcrumb() {
   return (
     <div className="mb-4">
+      <h2 className="mb-2 text-2xl font-bold text-gray-900">Expediente</h2>
       <p className="text-xs text-gray-400">Padrón de inmuebles · Expediente</p>
       <a
         href="/padron-inmuebles"
@@ -287,7 +288,7 @@ function TabsExpediente({
   onTabChange: (t: TabKey) => void;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap gap-1  border-b border-gray-300">
+    <div className="mb-6 flex flex-nowrap gap-1 overflow-x-auto border-b border-gray-300 pb-1">
       {TABS.map((t) => {
         const activo = t.key === tabActivo;
         return (
