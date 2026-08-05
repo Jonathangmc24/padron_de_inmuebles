@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EstatusInmueble {
+  VIGENTE
+  EN_PROCESO
+  BAJA
+  RECLASIFICACION
+}
+
+model Inmueble {
+  id           String          @id @default(cuid())
+  noControlGbi String          @unique
+  estatus      EstatusInmueble @default(VIGENTE)
+
+  // --- Identificación ---
+  consecutivo                 String
+  dirRegional                 String
+  cuo                         String?
+  nombre                      String?
+  tieneRfi                    String?
+  noRfi                       String?
+  noRiuf                      String?
+  documentoQueAcreditaInicial String?
+  tieneCedula                 String?
+  cedulaInventario            String?
+
+  // --- Ubicación ---
+  entidadFederativa      String?
+  claveEntidad           String?
+  claveLocalidad         String?
+  localidad              String?
+  claveMunicipio         String?
+  municipio              String?
+  tipoVialidad           String?
+  nombreVialidad         String?
+  entreVialidad          String?
+  yVialidad              String?
+  referencias            String?
+  numero                 String?
+  interior               String?
+  tipoAsentamiento       String?
+  colonia                String?
+  cpDireccion            String?
+  cpAdministracionPostal String?
+  direccionCompleta      String?
+  claveInegi             String?
+
+  // --- Datos técnicos ---
+  tipoInmueble                    String?
+  tipoOcupacionPrincipal          String?
+  personalQueOcupa                Int?
+  gradoAprovechamiento            String?
+  m2Terreno                       Float?
+  m2TerrenoManejoPostal           Float?
+  m2TerrenoEstacionamiento        Float?
+  m2Construccion                  Float?
+  m2ConstruccionAtencionUsuarios  Float?
+  m2ConstruccionOficinas          Float?
+  m2ConstruccionManejoPostal      Float?
+  m2ConstruccionBodegas           Float?
+  m2Ocupado                       Float?
+  costoAvaluo                     Float?
+  estadoFisico                    String?
+  latitud                         Float?
+  longitud                        Float?
+  zona                            String?
+  uso                             String?
+
+  // --- Fechas de control ---
+  fechaBaja            DateTime?
+  fechaAlta             DateTime?
+  fechaReclasificacion  DateTime?
+  fechaControl          DateTime?
+  fechaReporte          DateTime?
+
+  // --- Régimen y propiedad ---
+  regimen              String?
+  claveRegimen         String?
+  propietarioTitular   String?
+  tieneDocumento       String?
+  documentoQueAcredita String?
+  numDocumento         String?
+  fechaDocumento       DateTime?
+  categoriaDocumento   String?
+  ubicacionDocumento   String?
+  vigenciaDocumento    String?
+
+  // --- Inscripción registral ---
+  noInscripcionRppl    String?
+  rppl                 String?
+  fechaInscripcionRppl DateTime?
+  rppf                 String?
+  folioRealRppf        String?
+  fechaInscripcionRppf DateTime?
+  montoRenta           Float?
+
+  // --- Catastro ---
+  tieneCedulaCatastral  String?
+  cuentaCedulaCatastral String?
+  tienePlanoCatastral   String?
+  planoCatastral        String?
+  tieneValorCatastral   String?
+  valorTerreno          Float?
+  valorConstruccion     Float?
+  valorCatastralTotal   Float?
+  fechaValorCatastral   DateTime?
+  planoTopografico      String?
+  planoArquitectonico   String?
+  tieneInah             String?
+  dictamenInah          String?
+  catalogado            String?
+  tieneInba             String?
+  dictamenInba          String?
+  inahOInba             String?
+
+  // --- Situaciones especiales ---
+  compartido            String?
+  situacionEspecialUso  String?
+  util                  String?
+  dictamenFuncionalidad String?
+
+  // --- Catastro municipal ---
+  tieneAlineamiento      String?
+  constanciaAlineamiento String?
+  tieneUsoSuelo          String?
+  constanciaUsoSuelo     String?
+  memoriaFotografica     String?
+
+  // --- Condiciones físicas ---
+  numCuartosOficinas   Int?
+  numBodegas           Int?
+  numSanitarios        Int?
+  numEspaciosOtrosUsos Int?
+  alumbradoPublico     String?
+  pavimentacion        String?
+  drenajeAlcantarillado String?
+  aguaPotableHoras     String?
+  luz                  String?
+  drenaje              String?
+  gas                  String?
+  aireAcondicionado    String?
+  calefaccion          String?
+  telefono             String?
+  internet             String?
+  cctv                 String?
+
+  // --- Financiero ---
+  valorContable Float?
+  avaluo        Float?
+
+  // --- Observaciones / seguimiento ---
+  observaciones2025 String?
+  seguimiento2026   String?
+  categoria         String?
+  estatusInventario String?
+  situacionInmueble String?
+  contabilizado     String?
+  padronEstrategico String?
+
+  creadoEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  @@map("inmuebles")
+}
+
+model Usuario {
+  id       String @id @default(cuid())
+  nombre   String
+  apellido String
+  email    String @unique
+
+  creadoEn DateTime @default(now())
+
+  @@map("usuarios")
+}
