@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Bell, Check } from "lucide-react";
 import { Header } from "@/components/layout/Header";
+import { MapaInmuebles, type PuntoMapa } from "@/components/shared/MapaInmuebles";
 
 // -----------------------------------------------------------------------
 // Tipos — deben coincidir con la forma real de la respuesta del API
@@ -40,6 +41,7 @@ interface DashboardData {
   kpis: KpiCard[];
   alertas: Alerta[];
   resumen: FilaResumen[];
+  ubicaciones: PuntoMapa[];
 }
 
 const estatusConfig: Record<Estatus, { color: string; label: string }> = {
@@ -119,7 +121,7 @@ export default function PanelInicio() {
         <KpiGrid kpis={data?.kpis ?? []} cargando={cargando} />
 
         <SectionTitle>Localización de inmuebles</SectionTitle>
-        <MapaCard />
+        <MapaCard ubicaciones={data?.ubicaciones ?? []} />
 
         <AlertasStrip alertas={data?.alertas ?? []} cargando={cargando} />
 
@@ -217,20 +219,17 @@ function AlaDecorativa({ side }: { side: "left" | "right" }) {
   );
 }
 
-function MapaCard() {
+function MapaCard({ ubicaciones }: { ubicaciones: PuntoMapa[] }) {
   return (
     <div
       className="relative overflow-hidden rounded-xl p-6"
-      style={{ backgroundColor: "#611830" }}
+      style={{ backgroundColor: "#7A1F3D" }}
     >
       <AlaDecorativa side="left" />
       <AlaDecorativa side="right" />
 
-      {/* Contenedor del mapa real — sustituir por <Map /> (Mapbox/Google Maps) */}
-      <div className="relative z-10 flex h-80 items-center justify-center overflow-hidden rounded-lg border-2 border-white/30 bg-neutral-700 sm:h-[26rem]">
-        <span className="text-lg font-medium text-white/90">
-          Mapa interactivo
-        </span>
+      <div className="relative z-10">
+        <MapaInmuebles puntos={ubicaciones} />
       </div>
     </div>
   );
@@ -268,13 +267,19 @@ function AlertasStrip({
                 <div className="h-3 w-32 rounded bg-white/20" />
               </div>
             ))
-          : alertas.map((a, i) => (
-              <div key={i} className="px-6 py-7">
-                <p className="text-base font-semibold text-white">{a.titulo}</p>
-                <p className="mt-1.5 text-sm text-white/75">{a.detalle}</p>
-                <p className="text-sm text-white/75">· {a.accion}</p>
-              </div>
-            ))}
+          : alertas.length > 0
+            ? alertas.map((a, i) => (
+                <div key={i} className="px-6 py-7">
+                  <p className="text-base font-semibold text-white">{a.titulo}</p>
+                  <p className="mt-1.5 text-sm text-white/75">{a.detalle}</p>
+                  <p className="text-sm text-white/75">· {a.accion}</p>
+                </div>
+              ))
+            : (
+                <div className="col-span-3 flex items-center px-6 py-7">
+                  <p className="text-sm text-white/70">Sin alertas ni pendientes por ahora.</p>
+                </div>
+              )}
       </div>
     </div>
   );
