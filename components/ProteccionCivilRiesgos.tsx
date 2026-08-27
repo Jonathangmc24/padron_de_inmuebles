@@ -19,9 +19,9 @@ interface KpisProteccionCivil {
   extintoresVigentesDetalle: string;
 }
 
-type EstadoSeguridad = "apta" | "revision";
-type EstadoExtintores = "vigente" | "por_vencer";
-type EstadoMatPeligrosos = "no_aplica" | "aplica" | "pendiente";
+type EstadoSeguridad = "apta" | "revision" | "sin_dato";
+type EstadoExtintores = "vigente" | "por_vencer" | "sin_dato";
+type EstadoMatPeligrosos = "no_aplica" | "aplica" | "pendiente" | "sin_dato";
 
 interface FilaCumplimiento {
   inmueble: string;
@@ -43,11 +43,13 @@ interface UsuarioActual {
 const estadoSeguridadConfig: Record<EstadoSeguridad, { dot: string; text: string; label: string }> = {
   apta: { dot: "bg-emerald-500", text: "text-emerald-600", label: "Apta" },
   revision: { dot: "bg-amber-500", text: "text-amber-600", label: "Revisión" },
+  sin_dato: { dot: "bg-gray-300", text: "text-gray-400", label: "Sin dato" },
 };
 
 const estadoExtintoresConfig: Record<EstadoExtintores, { dot: string; text: string; label: string }> = {
   vigente: { dot: "bg-emerald-500", text: "text-emerald-600", label: "Vigente" },
   por_vencer: { dot: "bg-amber-500", text: "text-amber-600", label: "Por vencer" },
+  sin_dato: { dot: "bg-gray-300", text: "text-gray-400", label: "Sin dato" },
 };
 
 const estadoMatPeligrososConfig: Record<
@@ -57,6 +59,7 @@ const estadoMatPeligrososConfig: Record<
   no_aplica: { dot: "bg-gray-400", text: "text-gray-500", label: "No aplica" },
   aplica: { dot: "bg-emerald-500", text: "text-emerald-600", label: "Aplica" },
   pendiente: { dot: "bg-amber-500", text: "text-amber-600", label: "Pendiente" },
+  sin_dato: { dot: "bg-gray-300", text: "text-gray-400", label: "Sin dato" },
 };
 
 // -----------------------------------------------------------------------
