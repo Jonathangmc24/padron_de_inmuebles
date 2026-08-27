@@ -26,9 +26,9 @@ type Estatus = "completo" | "parcial" | "sin-sistema";
 
 interface FilaResumen {
   tipo: string;
-  sipirf: boolean;
-  scaydfo: boolean;
-  padronSepomex: boolean;
+  documento: boolean;
+  catastro: boolean;
+  indaabin: boolean;
   estatus: Estatus;
 }
 
@@ -222,11 +222,13 @@ function AlaDecorativa({ side }: { side: "left" | "right" }) {
 function MapaCard({ ubicaciones }: { ubicaciones: PuntoMapa[] }) {
   return (
     <div
-      className="relative overflow-hidden rounded-xl p-6"
+      className="relative overflow-hidden rounded-xl p-1.5 sm:p-3"
       style={{ backgroundColor: "#7A1F3D" }}
     >
-      <AlaDecorativa side="left" />
-      <AlaDecorativa side="right" />
+      <div className="hidden sm:block">
+        <AlaDecorativa side="left" />
+        <AlaDecorativa side="right" />
+      </div>
 
       <div className="relative z-10">
         <MapaInmuebles puntos={ubicaciones} />
@@ -301,10 +303,10 @@ function ResumenTable({
       <table className="w-full min-w-[560px] text-left text-sm text-white">
         <thead style={{ backgroundColor: "#611830" }}>
           <tr className="border-b border-white/15 text-white">
-            <th className="px-5 py-4 font-semibold">Tipo</th>
-            <th className="px-5 py-4 font-semibold">SIPIFP</th>
-            <th className="px-5 py-4 font-semibold">SCAyDFO</th>
-            <th className="px-5 py-4 font-semibold">Padron SEPOMEX</th>
+            <th className="px-5 py-4 font-semibold">Tipo (régimen)</th>
+            <th className="px-5 py-4 font-semibold">Documento de propiedad</th>
+            <th className="px-5 py-4 font-semibold">Cédula catastral</th>
+            <th className="px-5 py-4 font-semibold">Cédula INDAABIN</th>
             <th className="px-5 py-4 font-semibold">Estatus</th>
           </tr>
         </thead>
@@ -322,9 +324,9 @@ function ResumenTable({
                 return (
                   <tr key={i} className="border-b border-white/10 last:border-none">
                     <td className="px-5 py-4">{fila.tipo}</td>
-                    <td className="px-5 py-4">{fila.sipirf && <Check className="h-4 w-4" />}</td>
-                    <td className="px-5 py-4">{fila.scaydfo && <Check className="h-4 w-4" />}</td>
-                    <td className="px-5 py-4">{fila.padronSepomex && <Check className="h-4 w-4" />}</td>
+                    <td className="px-5 py-4">{fila.documento && <Check className="h-4 w-4" />}</td>
+                    <td className="px-5 py-4">{fila.catastro && <Check className="h-4 w-4" />}</td>
+                    <td className="px-5 py-4">{fila.indaabin && <Check className="h-4 w-4" />}</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-1.5">
                         <span className={`h-2 w-2 rounded-full ${cfg.color}`} />
