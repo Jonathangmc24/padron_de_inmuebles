@@ -15,7 +15,7 @@ interface MapaInmueblesProps {
 }
 
 const COLOR_ESTATUS: Record<string, string> = {
-  vigente: "#10B981",
+  vigente: "#099667",
   en_proceso: "#F59E0B",
   baja: "#9CA3AF",
   reclasificacion: "#A855F7",
@@ -80,6 +80,20 @@ export function MapaInmuebles({ puntos }: MapaInmueblesProps) {
         }).bindPopup(
           `<strong>${p.nombre}</strong><br/>${p.noControlGbi}<br/>Estatus: ${p.estatus}`
         );
+
+        // Quita el comportamiento por defecto de Leaflet (abrir el popup al
+        // instante) para reemplazarlo por: primero zoom animado, y hasta que
+        // termine, se abre la información.
+        marcador.off("click");
+        marcador.on("click", () => {
+          mapa.once("moveend", () => {
+            marcador.openPopup();
+          });
+          mapa.flyTo([p.latitud, p.longitud], Math.max(mapa.getZoom(), 15), {
+            duration: 0.7,
+          });
+        });
+
         marcador.addTo(grupo);
       });
 
