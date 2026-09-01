@@ -24,7 +24,7 @@ export function SelectPersonalizado({
   const esFormulario = variante === "formulario";
 
   return (
-    <SelectPrimitive.Root value={value || undefined} onValueChange={onChange}>
+    <SelectPrimitive.Root modal={false} value={value || undefined} onValueChange={onChange}>
       <SelectPrimitive.Trigger
         className={`flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm outline-none transition-colors ${
           esFormulario
@@ -57,9 +57,9 @@ export function SelectPersonalizado({
           side="bottom"
           avoidCollisions={false}
           sideOffset={6}
-          className="z-50 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg"
+          className="z-50 max-h-[min(320px,60vh)] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg"
         >
-          <SelectPrimitive.Viewport className="p-1.5">
+          <SelectPrimitive.Viewport className="max-h-[min(320px,60vh)] overflow-y-auto p-1.5">
             {opciones.map((op) => (
               <SelectPrimitive.Item
                 key={op}
