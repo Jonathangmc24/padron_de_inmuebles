@@ -24,7 +24,7 @@ export function SelectPersonalizado({
   const esFormulario = variante === "formulario";
 
   return (
-    <SelectPrimitive.Root modal={false} value={value || undefined} onValueChange={onChange}>
+    <SelectPrimitive.Root value={value || undefined} onValueChange={onChange}>
       <SelectPrimitive.Trigger
         className={`flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm outline-none transition-colors ${
           esFormulario
