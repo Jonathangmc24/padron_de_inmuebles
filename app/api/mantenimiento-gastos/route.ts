@@ -6,6 +6,12 @@ function esSi(valor: string | null): boolean {
   return t === "si" || t === "sí";
 }
 
+function formatoMonto(valor: number): string {
+  if (valor >= 1_000_000) return `$${(valor / 1_000_000).toFixed(1)}M`;
+  if (valor >= 1_000) return `$${(valor / 1_000).toFixed(1)}K`;
+  return `$${valor.toLocaleString("es-MX")}`;
+}
+
 export async function GET() {
   const inmuebles = await prisma.inmueble.findMany({
     select: {
@@ -25,12 +31,7 @@ export async function GET() {
   });
 
   const total = inmuebles.length;
-
-  // "Servicios al corriente" = inmuebles con luz activa (dato real de tu Excel)
   const serviciosAlCorriente = inmuebles.filter((i) => esSi(i.luz)).length;
-
-  // "Mantenimientos pendientes" = proxy real: inmuebles cuyo estado físico
-  // NO es "Bueno" (no existe un log de mantenimientos realizados en tu Excel)
   const mantenimientosPendientes = inmuebles.filter(
     (i) => i.estadoFisico && i.estadoFisico.toLowerCase() !== "bueno"
   ).length;
@@ -60,12 +61,31 @@ export async function GET() {
     };
   });
 
+  // Mantenimientos reales, capturados desde "Registrar mantenimiento"
+  const mantenimientosReales = await prisma.mantenimiento.findMany({
+    include: { inmueble: { select: { noControlGbi: true, nombre: true } } },
+    orderBy: { fecha: "desc" },
+    take: 20,
+  });
+
+  const historial = mantenimientosReales.map((m) => ({
+    titulo: m.descripcion,
+    detalle: `${m.inmueble.nombre ?? m.inmueble.noControlGbi} · ${m.fecha.toLocaleDateString("es-MX")} · ${
+      m.tipo === "PREVENTIVO" ? "preventivo" : "correctivo"
+    }`,
+    monto: m.costo != null ? `$${m.costo.toLocaleString("es-MX")}` : "Sin costo capturado",
+  }));
+
+  const inicioAnio = new Date(new Date().getFullYear(), 0, 1);
+  const gastoAnioActual = mantenimientosReales
+    .filter((m) => m.fecha >= inicioAnio)
+    .reduce((acc, m) => acc + (m.costo ?? 0), 0);
+
   return NextResponse.json({
     kpis: {
-      // No existe un campo de presupuesto/gasto de mantenimiento en tu Excel —
-      // se deja en 0 en vez de inventar una cifra.
-      gastoAnualEstimado: "No disponible",
-      gastoAnualDetalle: "Sin presupuesto capturado en el padrón",
+      gastoAnualEstimado: gastoAnioActual > 0 ? formatoMonto(gastoAnioActual) : "No disponible",
+      gastoAnualDetalle:
+        gastoAnioActual > 0 ? "Suma de mantenimientos capturados este año" : "Sin mantenimientos capturados este año",
       serviciosAlCorriente,
       serviciosAlCorrienteDetalle: `De ${total} inmuebles`,
       mantenimientosPendientes,
@@ -73,8 +93,7 @@ export async function GET() {
       inmueblesAsegurados: 0,
       inmueblesAseguradosDetalle: "Sin datos de pólizas registrados",
     },
-    // No existe una bitácora de mantenimientos realizados en tu Excel todavía
-    historial: [],
+    historial,
     serviciosEstatus,
     programas: ["Programa anual"],
   });

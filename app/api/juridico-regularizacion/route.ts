@@ -26,61 +26,51 @@ export async function GET() {
       rppl: true,
       cedulaInventario: true,
       tieneUsoSuelo: true,
-      fechaDocumento: true,
-      vigenciaDocumento: true,
     },
   });
 
   const total = inmuebles.length;
 
-  // --- KPIs ---
   const regularizados = inmuebles.filter((i) => esSi(i.tieneDocumento) && esSi(i.tieneValorCatastral));
   const montoRegularizados = regularizados.reduce((acc, i) => acc + (i.valorContable ?? 0), 0);
-
   const enRegula = inmuebles.filter((i) => !esSi(i.tieneDocumento) || !esSi(i.tieneValorCatastral));
 
-  const contratosBase = inmuebles.filter(
-    (i) => (i.regimen ?? "").toLowerCase() === "arrendamiento" || (i.regimen ?? "").toLowerCase() === "comodato"
-  );
+  const contratosReales = await prisma.contrato.findMany({
+    include: { inmueble: { select: { noControlGbi: true, nombre: true, dirRegional: true } } },
+    orderBy: { creadoEn: "desc" },
+  });
 
-  // --- Contratos (arrendamiento / comodato) ---
-  const contratos = contratosBase.map((i) => {
-    const esArrendamiento = (i.regimen ?? "").toLowerCase() === "arrendamiento";
+  const ahora = new Date();
+  const en30Dias = new Date();
+  en30Dias.setDate(en30Dias.getDate() + 30);
+
+  const contratos = contratosReales.map((c) => {
+    let estatus: "vigente" | "por_vencer" | "vencido" = "vigente";
+    if (c.fechaFin) {
+      if (c.fechaFin < ahora) estatus = "vencido";
+      else if (c.fechaFin < en30Dias) estatus = "por_vencer";
+    }
+
     const montoTexto =
-      esArrendamiento && i.montoRenta
-        ? `Monto ${formatoMonto(i.montoRenta)} MXN/mes`
+      c.tipo === "ARRENDAMIENTO" && c.montoRenta
+        ? `Monto ${formatoMonto(c.montoRenta)} MXN/mes`
         : "Sin costo (comodato)";
-    const vigenciaTexto = i.vigenciaDocumento ? `Vigencia: ${i.vigenciaDocumento}` : "Vigencia no especificada";
+    const vigenciaTexto = c.fechaFin
+      ? `Vence ${c.fechaFin.toLocaleDateString("es-MX")}`
+      : "Sin fecha de fin capturada";
 
     return {
-      titulo: `${i.regimen} - ${i.nombre ?? i.noControlGbi}`,
-      detalle: `${i.dirRegional} · ${montoTexto} · ${vigenciaTexto}`,
-      estatus: "vigente" as const,
+      titulo: `${c.tipo === "ARRENDAMIENTO" ? "Arrendamiento" : "Comodato"} - ${c.inmueble.nombre ?? c.inmueble.noControlGbi}`,
+      detalle: `${c.inmueble.dirRegional} · ${montoTexto} · ${vigenciaTexto}`,
+      estatus,
     };
   });
 
-  // --- Seguimiento de regularización ---
   const seguimiento = [
-    {
-      label: "Inscripción RPPL",
-      actual: inmuebles.filter((i) => esSi(i.rppl)).length,
-      total,
-    },
-    {
-      label: "Cédula INDAABIN",
-      actual: inmuebles.filter((i) => Boolean(i.cedulaInventario)).length,
-      total,
-    },
-    {
-      label: "Documento de propiedad en resguardo",
-      actual: inmuebles.filter((i) => esSi(i.tieneDocumento)).length,
-      total,
-    },
-    {
-      label: "Uso de suelo vigente",
-      actual: inmuebles.filter((i) => esSi(i.tieneUsoSuelo)).length,
-      total,
-    },
+    { label: "Inscripción RPPL", actual: inmuebles.filter((i) => esSi(i.rppl)).length, total },
+    { label: "Cédula INDAABIN", actual: inmuebles.filter((i) => Boolean(i.cedulaInventario)).length, total },
+    { label: "Documento de propiedad en resguardo", actual: inmuebles.filter((i) => esSi(i.tieneDocumento)).length, total },
+    { label: "Uso de suelo vigente", actual: inmuebles.filter((i) => esSi(i.tieneUsoSuelo)).length, total },
   ];
 
   return NextResponse.json({
@@ -89,7 +79,7 @@ export async function GET() {
       regularizadosDetalle: "Documentación completa",
       enRegulaCantidad: enRegula.length,
       enRegulaDetalle: "Trámite en proceso",
-      contratosVigentesCantidad: contratosBase.length,
+      contratosVigentesCantidad: contratos.filter((c) => c.estatus === "vigente").length,
       contratosVigentesDetalle: "Arrendamiento y comodato",
     },
     contratos,

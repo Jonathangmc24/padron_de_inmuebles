@@ -164,6 +164,10 @@ model Inmueble {
   contabilizado     String?
   padronEstrategico String?
 
+  contratos      Contrato[]
+  mantenimientos Mantenimiento[]
+  cedulasRiesgo  CedulaRiesgo[]
+
   creadoEn      DateTime @default(now())
   actualizadoEn DateTime @updatedAt
 
@@ -179,4 +183,75 @@ model Usuario {
   creadoEn DateTime @default(now())
 
   @@map("usuarios")
+}
+
+enum TipoContrato {
+  ARRENDAMIENTO
+  COMODATO
+}
+
+enum EstatusContrato {
+  VIGENTE
+  POR_VENCER
+  VENCIDO
+}
+
+model Contrato {
+  id           String          @id @default(cuid())
+  inmuebleId   String
+  inmueble     Inmueble        @relation(fields: [inmuebleId], references: [id])
+  tipo         TipoContrato
+  arrendatario String?
+  montoRenta   Float?
+  fechaInicio  DateTime?
+  fechaFin     DateTime?
+  estatus      EstatusContrato @default(VIGENTE)
+  notas        String?
+
+  creadoEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  @@map("contratos")
+}
+
+enum TipoMantenimiento {
+  PREVENTIVO
+  CORRECTIVO
+}
+
+model Mantenimiento {
+  id          String            @id @default(cuid())
+  inmuebleId  String
+  inmueble    Inmueble          @relation(fields: [inmuebleId], references: [id])
+  tipo        TipoMantenimiento
+  descripcion String
+  costo       Float?
+  fecha       DateTime
+
+  creadoEn DateTime @default(now())
+
+  @@map("mantenimientos")
+}
+
+enum NivelRiesgo {
+  BAJO
+  MEDIO
+  ALTO
+}
+
+model CedulaRiesgo {
+  id                   String      @id @default(cuid())
+  inmuebleId           String
+  inmueble             Inmueble    @relation(fields: [inmuebleId], references: [id])
+  nivelRiesgo          NivelRiesgo
+  extintoresVigentes   Boolean     @default(false)
+  hidrantesVigentes    Boolean     @default(false)
+  materialesPeligrosos Boolean     @default(false)
+  accesibilidad        Boolean     @default(false)
+  observaciones        String?
+
+  fecha    DateTime @default(now())
+  creadoEn DateTime @default(now())
+
+  @@map("cedulas_riesgo")
 }

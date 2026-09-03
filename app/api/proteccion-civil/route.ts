@@ -11,17 +11,38 @@ export async function GET() {
     },
   });
 
-  const total = inmuebles.length;
-  const riesgoAlto = inmuebles.filter((i) => (i.estadoFisico ?? "").toLowerCase() === "malo").length;
+  const riesgoAltoProxy = inmuebles.filter((i) => (i.estadoFisico ?? "").toLowerCase() === "malo").length;
 
-  // Cumplimiento por inmueble: "Seguridad estructural" usa un proxy real
-  // (estado físico del inmueble). Extintores/hidrantes y materiales
-  // peligrosos NO existen en tu Excel, así que se marcan honestamente
-  // como "Sin dato" en vez de inventar un check verde.
-  const cumplimiento = inmuebles.slice(0, 20).map((i) => {
+  // Cédulas de riesgo reales, capturadas desde "Nueva cédula de riesgo"
+  const cedulas = await prisma.cedulaRiesgo.findMany({
+    include: { inmueble: { select: { id: true, noControlGbi: true, nombre: true, municipio: true } } },
+    orderBy: { creadoEn: "desc" },
+  });
+
+  const riesgoAlto = cedulas.filter((c) => c.nivelRiesgo === "ALTO").length;
+  const conAccesibilidad = cedulas.filter((c) => c.accesibilidad).length;
+  const extintoresVigentes = cedulas.filter((c) => c.extintoresVigentes).length;
+
+  // Cumplimiento: una fila por cada inmueble que YA tiene cédula real capturada
+  const cumplimientoReal = cedulas.map((c) => ({
+    inmueble: `${c.inmueble.noControlGbi} - ${c.inmueble.municipio ?? c.inmueble.nombre ?? ""}`,
+    seguridadEstructural:
+      c.nivelRiesgo === "BAJO" ? ("apta" as const) : c.nivelRiesgo === "MEDIO" ? ("revision" as const) : ("revision" as const),
+    extintoresHidrantes: c.extintoresVigentes ? ("vigente" as const) : ("por_vencer" as const),
+    matPeligrosos: c.materialesPeligrosos ? ("aplica" as const) : ("no_aplica" as const),
+  }));
+
+  // El resto de inmuebles (sin cédula capturada todavía) se muestran honestamente sin dato
+  const idsConCedula = new Set(cedulas.map((c) => c.inmueble.id));
+  const sinCedula = await prisma.inmueble.findMany({
+    where: { id: { notIn: Array.from(idsConCedula) } },
+    select: { noControlGbi: true, nombre: true, municipio: true, estadoFisico: true },
+    take: 20,
+  });
+
+  const cumplimientoSinDato = sinCedula.map((i) => {
     const fisico = (i.estadoFisico ?? "").toLowerCase();
     const seguridadEstructural = fisico === "bueno" ? "apta" : fisico ? "revision" : "sin_dato";
-
     return {
       inmueble: `${i.noControlGbi} - ${i.municipio ?? i.nombre ?? ""}`,
       seguridadEstructural: seguridadEstructural as "apta" | "revision" | "sin_dato",
@@ -32,15 +53,15 @@ export async function GET() {
 
   return NextResponse.json({
     kpis: {
-      cedulasRiesgo: 0,
-      cedulasRiesgoDetalle: "No hay cédulas de riesgo capturadas",
-      riesgoAlto,
-      riesgoAltoDetalle: "Estado físico: Malo",
-      conAccesibilidad: 0,
-      conAccesibilidadDetalle: "Dato no capturado en el padrón",
-      extintoresVigentes: 0,
-      extintoresVigentesDetalle: "Dato no capturado en el padrón",
+      cedulasRiesgo: cedulas.length,
+      cedulasRiesgoDetalle: cedulas.length > 0 ? "Capturadas en el sistema" : "No hay cédulas capturadas",
+      riesgoAlto: cedulas.length > 0 ? riesgoAlto : riesgoAltoProxy,
+      riesgoAltoDetalle: cedulas.length > 0 ? "Nivel de riesgo alto" : "Estado físico: Malo (proxy, sin cédula capturada)",
+      conAccesibilidad,
+      conAccesibilidadDetalle: cedulas.length > 0 ? "Con accesibilidad confirmada" : "Dato no capturado en el padrón",
+      extintoresVigentes,
+      extintoresVigentesDetalle: cedulas.length > 0 ? "Con extintores vigentes" : "Dato no capturado en el padrón",
     },
-    cumplimiento,
+    cumplimiento: [...cumplimientoReal, ...cumplimientoSinDato],
   });
 }
