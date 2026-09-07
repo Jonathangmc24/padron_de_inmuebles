@@ -134,18 +134,11 @@ export default function InformacionFinanciera() {
 
 function EncabezadoPagina() {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-      <div>
-        <h2 className="text-xl font-extrabold text-gray-900">Información financiera</h2>
-        <p className="mt-1 text-sm text-gray-500">
-          Valores contables, Avalúos y costos de los inmuebles
-        </p>
-      </div>
-
-      {/* Ajusta el destino cuando exista la vista de conciliación */}
-      <a href="/informacion-financiera/conciliacion-dcaf" className="text-sm font-bold" style={{ color: "#7B2645" }}>
-        Conciliación DCAF
-      </a>
+    <div className="mb-6">
+      <h2 className="text-xl font-extrabold text-gray-900">Información financiera</h2>
+      <p className="mt-1 text-sm text-gray-500">
+        Valores contables, Avalúos y costos de los inmuebles
+      </p>
     </div>
   );
 }

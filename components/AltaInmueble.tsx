@@ -280,7 +280,7 @@ export default function AltaInmueble() {
 
         <TabsFormulario tabActivo={tab} onTabChange={setTab} tieneErrorEnTab={tieneErrorEnTab} />
 
-        <div className="rounded-xl rounded-tl-none border border-gray-200 bg-white p-6">
+        <div className="min-h-[420px] rounded-xl rounded-tl-none border border-gray-200 bg-white p-6">
           {tab === "identificacion" && (
             <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
               <CampoTexto
@@ -487,14 +487,6 @@ function EncabezadoFormulario({
             Apertura de expediente y carga e información (Flujograma inicial - DCAF - SRM - GBI)
           </p>
         </div>
-
-        <a
-          href="/informacion-financiera/conciliacion-dcaf"
-          className="text-sm font-bold"
-          style={{ color: "#7B2645" }}
-        >
-          Conciliación DCAF
-        </a>
       </div>
 
       <div className="mt-4 hidden flex-wrap items-center justify-end gap-3 sm:flex sm:gap-4">
